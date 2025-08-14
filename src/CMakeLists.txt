@@ -1460,6 +1460,10 @@ endif(${CMAKE_SYSTEM_NAME} STREQUAL "SunOS")
 
 # [BB] Added GeoIP, huffman & sqlite
 target_link_libraries( zdoom ${ZDOOM_LIBS} gdtoa dumb lzma GeoIP sqlite3 )
+
+if(UWP)
+	target_link_libraries( zdoom ${CMAKE_SOURCE_DIR}/uwp/libuwp.lib)
+endif(UWP)
 include_directories( .
 	g_doom
 	g_heretic

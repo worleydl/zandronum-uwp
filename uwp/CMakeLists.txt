@@ -40,6 +40,7 @@ set(BinDeps
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/libcrypto-3-x64.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/libuwp.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/libgallium_wgl.dll
+	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/libglapi.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/opengl32.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/SDL2.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/z-1.dll
@@ -49,6 +50,7 @@ set(BinDeps
 
 	# Temporary
 	"C:/Windows/System32/glu32.dll"
+	"E:/skulltag/doom.wad"
 
 	Package.appxmanifest
 )

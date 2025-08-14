@@ -341,6 +341,11 @@ void gl_LoadExtensions()
 	glActiveTexture = (PFNGLACTIVETEXTUREPROC)myGetProcAddress("glActiveTextureARB");
 	glMultiTexCoord2f = (PFNGLMULTITEXCOORD2FPROC) myGetProcAddress("glMultiTexCoord2fARB");
 	glMultiTexCoord2fv = (PFNGLMULTITEXCOORD2FVPROC) myGetProcAddress("glMultiTexCoord2fvARB");
+
+#ifdef _UWP_
+	static const HMODULE module = GetModuleHandleA("OpenGL32.dll");
+	wglSwapBuffers = reinterpret_cast<PFNGLWGLSWAPBUFFERSPROC>(GetProcAddress(module, reinterpret_cast<LPCSTR>("wglSwapBuffers")));
+#endif
 }
 
 //==========================================================================

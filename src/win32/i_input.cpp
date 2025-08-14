@@ -681,6 +681,7 @@ bool I_InitInput (void *hwnd)
 
 	FindRawInputFunctions();
 
+#ifndef _UWP_
 	// Try for DirectInput 8 first, then DirectInput 3 for NT 4's benefit.
 	DInputDLL = LoadLibrary("dinput8.dll");
 	if (DInputDLL != NULL)
@@ -743,6 +744,11 @@ bool I_InitInput (void *hwnd)
 
 	Printf ("I_StartupDirectInputJoystick\n");
 	I_StartupDirectInputJoystick();
+#else
+	// UWP TODO: Would like keyboard to work eventually...
+	Printf ("I_StartupXInput\n");
+	I_StartupXInput();
+#endif
 
 	return TRUE;
 }

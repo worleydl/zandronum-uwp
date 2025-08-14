@@ -22,6 +22,11 @@
 void gl_CalculateCPUSpeed();
 extern int NewWidth, NewHeight, NewBits, DisplayBits;
 
+#ifdef _UWP_
+extern "C" __declspec(dllimport) void  uwp_ProcessEvents();
+extern "C" __declspec(dllimport) void* uwp_GetWindowReference();
+#endif
+
 CUSTOM_CVAR(Int, gl_vid_multisample, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_NOINITCALL )
 {
 	Printf("This won't take effect until " GAMENAME " is restarted.\n");
@@ -572,10 +577,14 @@ bool Win32GLVideo::SetPixelFormat()
 
 	int pixelFormat;
 
+#ifndef _UWP_
 	// we have to create a dummy window to init stuff from or the full init stuff fails
 	dummy = InitDummy();
 
 	hDC = GetDC(dummy);
+#else
+	hDC = static_cast<HDC>(uwp_GetWindowReference());
+#endif
 	pixelFormat = ChoosePixelFormat(hDC, &pfd);
 	DescribePixelFormat(hDC, pixelFormat, sizeof(pfd), &pfd);
 
@@ -590,8 +599,10 @@ bool Win32GLVideo::SetPixelFormat()
 
 	wglMakeCurrent(NULL, NULL);
 	wglDeleteContext(hRC);
+#ifndef _UWP_
 	ReleaseDC(dummy, hDC);
 	ShutdownDummy(dummy);
+#endif
 
 	return true;
 }
@@ -734,7 +745,8 @@ bool Win32GLVideo::SetupPixelFormat(bool allowsoftware, int multisample)
 
 bool Win32GLVideo::InitHardware (HWND Window, bool allowsoftware, int multisample)
 {
-	m_Window=Window;
+	m_Window = Window;
+#ifndef _UWP_
 	m_hDC = GetDC(Window);
 
 	if (!SetupPixelFormat(allowsoftware, multisample))
@@ -742,6 +754,9 @@ bool Win32GLVideo::InitHardware (HWND Window, bool allowsoftware, int multisampl
 		Printf ("R_OPENGL: Reverting to software mode...\n");
 		return false;
 	}
+#else
+	m_hDC = static_cast<HDC>(uwp_GetWindowReference());
+#endif
 
 	m_hRC = 0;
 	if (wglCreateContextAttribsARB != NULL)
@@ -768,6 +783,7 @@ bool Win32GLVideo::InitHardware (HWND Window, bool allowsoftware, int multisampl
 	}
 
 	wglMakeCurrent(m_hDC, m_hRC);
+
 	return true;
 }
 
@@ -1060,7 +1076,12 @@ void Win32GLFrameBuffer::SetVSync (bool vsync)
 
 void Win32GLFrameBuffer::SwapBuffers()
 {
+#ifndef _UWP_
 	::SwapBuffers(static_cast<Win32GLVideo *>(Video)->m_hDC);
+#else
+	uwp_ProcessEvents();
+	wglSwapBuffers(static_cast<Win32GLVideo *>(Video)->m_hDC);
+#endif
 }
 
 //==========================================================================

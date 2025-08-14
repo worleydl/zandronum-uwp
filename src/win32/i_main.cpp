@@ -123,6 +123,11 @@ extern EXCEPTION_POINTERS CrashPointers;
 extern BITMAPINFO *StartupBitmap;
 extern UINT TimerPeriod;
 
+#ifdef _UWP_
+extern "C" __declspec(dllimport) void uwp_GetScreenSize(int* x, int* y);
+extern "C" __declspec(dllimport) void* uwp_GetWindowReference();
+#endif
+
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
 // The command line arguments.
@@ -945,6 +950,7 @@ void DoMain (HINSTANCE hInstance)
 			width = 512;
 			height = 384;
 
+#ifndef _UWP_
 			// Many Windows structures that specify their size do so with the first
 			// element. DEVMODE is not one of those structures.
 			memset (&displaysettings, 0, sizeof(displaysettings));
@@ -986,6 +992,9 @@ void DoMain (HINSTANCE hInstance)
 					(HMENU)  NULL,
 							hInstance,
 					NULL);
+#else
+			Window = reinterpret_cast<HWND>(uwp_GetWindowReference());
+#endif
 
 			if (!Window)
 				I_FatalError ("Could not open window");
@@ -1017,10 +1026,15 @@ void DoMain (HINSTANCE hInstance)
 				}
 			}
 
+#ifndef _UWP_
 			GetClientRect (Window, &cRect);
 
 			WinWidth = cRect.right;
 			WinHeight = cRect.bottom;
+#else
+			WinWidth = 1920;
+			WinHeight = 1080;
+#endif
 		}
 
 		CoInitialize (NULL);
@@ -1300,6 +1314,8 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE nothing, LPSTR cmdline, int n
 
 	InitCommonControls ();			// Load some needed controls and be pretty under XP
 
+// Xbox UWP doesn't have riched20, current plan is to rig up simple imgui replacements
+#ifndef _UWP_
 	// We need to load riched20.dll so that we can create the control.
 	if (NULL == LoadLibrary ("riched20.dll"))
 	{
@@ -1309,6 +1325,7 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE nothing, LPSTR cmdline, int n
 		MessageBoxA(NULL, "Could not load riched20.dll", "ZDoom Error", MB_OK | MB_ICONSTOP);
 		exit(0);
 	}
+#endif
 
 #if !defined(__GNUC__) && defined(_DEBUG)
 	if (__argc == 2 && strcmp (__argv[1], "TestCrash") == 0)
