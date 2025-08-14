@@ -615,7 +615,11 @@ bool FXInputController::IsAxisMapDefault(int axis)
 
 FXInputManager::FXInputManager()
 {
+#ifndef _UWP_
 	XInputDLL = LoadLibrary(XINPUT_DLL);
+#else
+	XInputDLL = LoadLibrary("xinput1_4.dll");
+#endif
 	if (XInputDLL != NULL)
 	{
 		InputGetState = (XInputGetStateType)GetProcAddress(XInputDLL, "XInputGetState");

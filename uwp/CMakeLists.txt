@@ -50,6 +50,7 @@ set(BinDeps
 
 	# Temporary
 	"C:/Windows/System32/glu32.dll"
+	"G:/dev/uwp/libs/winmm-wrapper/uwpmm.dll"
 	"E:/skulltag/doom.wad"
 
 	Package.appxmanifest

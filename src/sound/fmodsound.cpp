@@ -809,6 +809,7 @@ bool FMODSoundRenderer::Init()
 	}
 #endif
 
+#ifndef _UWP_
 	// Set the user specified output mode.
 	eval = Enum_NumForName(OutputNames, snd_output);
 	if (eval >= 0)
@@ -828,6 +829,11 @@ bool FMODSoundRenderer::Init()
 			Sys->setOutput(FMOD_OUTPUTTYPE_AUTODETECT);
 		}
 	}
+#else
+	int currentDriver;
+	Sys->getDriver(&currentDriver);
+	result = Sys->setOutput(FMOD_OUTPUTTYPE_WASAPI);
+#endif
 	
 	result = Sys->getNumDrivers(&driver);
 #ifdef __unix__
@@ -1247,6 +1253,8 @@ void FMODSoundRenderer::Shutdown()
 		// [AK] Shut down the VoIP controller.
 		VOIPController::GetInstance( ).Shutdown( );
 
+// No idea what's causing fmodex to lock up on uwp exit...+1 for getting openal working eventually
+#ifndef _UWP_
 		Sys->close();
 		if (OutputPlugin != 0)
 		{
@@ -1255,6 +1263,7 @@ void FMODSoundRenderer::Shutdown()
 		}
 		Sys->release();
 		Sys = NULL;
+#endif
 	}
 }
 

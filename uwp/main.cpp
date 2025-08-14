@@ -11,13 +11,18 @@ int bootstrap(int argc, char** argv)
 {
 	uwp_GetWindowReference(); // Call once to init reference for other threads
 
-	// Ugly SDL bridge workaround, may revert to different version since project doesn't currently use SDL
-	// The current mesa build pings SDL looking for the requested window size, it should have a failsafe not sure what happened
+	// Placeholder mesa bridge code
+	// In SDL_BRIDGE mode mesa tries to fetch the current framebuffer size from SDL
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_Window* bridgeWorkaround = SDL_CreateWindow("", 0, 0, 1920, 1080, 0);
+	SDL_Window* tmpBridge = SDL_CreateWindow("", 0, 0, 800, 600, 0); // BUG: Init size gets DESTROYED by fullscreen values no matter the flag value
+	SDL_SetWindowSize(tmpBridge, 800, 600); // This will bypass the bug above and get mesa to resize the buffer
 
-	return ExternalWinMain(hInst, prev_hInst, 0, 0); // TODO: Fix args
+	int ret = ExternalWinMain(hInst, prev_hInst, 0, 0); // TODO: Fix cmd line args
 
+	SDL_DestroyWindow(tmpBridge);
+	SDL_Quit();
+
+	return ret;
 }
 
 int CALLBACK WinMain(HINSTANCE h, HINSTANCE prev, LPSTR argv, int argc)

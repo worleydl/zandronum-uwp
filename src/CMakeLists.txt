@@ -159,7 +159,7 @@ if( WIN32 )
 
 	set( ZDOOM_LIBS
 		wsock32
-		winmm
+		#winmm
 		"${DX_dxguid_LIBRARY}"
 		"${DX_dinput8_LIBRARY}"
 		ole32
@@ -1462,7 +1462,10 @@ endif(${CMAKE_SYSTEM_NAME} STREQUAL "SunOS")
 target_link_libraries( zdoom ${ZDOOM_LIBS} gdtoa dumb lzma GeoIP sqlite3 )
 
 if(UWP)
-	target_link_libraries( zdoom ${CMAKE_SOURCE_DIR}/uwp/libuwp.lib)
+	target_link_libraries( zdoom 
+		${CMAKE_SOURCE_DIR}/uwp/libuwp.lib
+		${CMAKE_SOURCE_DIR}/uwp/uwpmm.lib
+	)
 endif(UWP)
 include_directories( .
 	g_doom
