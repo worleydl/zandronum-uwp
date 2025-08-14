@@ -773,7 +773,9 @@ void SERVER_Tick( void )
 		// Update the scoreboard if we have a new second to display.
 		if ( timelimit && (( level.time % TICRATE ) == 0 ) && ( level.time != oldTime ))
 		{
+#ifndef _UWP_
 			SERVERCONSOLE_UpdateScoreboard( );
+#endif
 			oldTime = level.time;
 		}
 
@@ -881,8 +883,10 @@ void SERVER_Tick( void )
 			g_lInboundDataTransferLastSecond = g_lCurrentInboundDataTransfer;
 			g_lCurrentInboundDataTransfer = 0;
 
+#ifndef _UWP_
 			// Update the form.
 			SERVERCONSOLE_UpdateStatistics( );
+#endif
 		}
 
 		//DObject::EndFrame ();
@@ -1777,8 +1781,10 @@ void SERVER_ConnectNewPlayer( BYTESTREAM_s *pByteStream )
 			players[ulIdx].pSkullBot->PostEvent( BOTEVENT_PLAYER_JOINEDGAME );
 	}
 
+#ifndef _UWP_
 	if ( g_aClients[g_lCurrentClient].State != CLS_SPAWNED )
 		SERVERCONSOLE_ReListPlayers( );
+#endif
 
 	// Update this client's state. He's in the game now!
 	g_aClients[g_lCurrentClient].State = CLS_SPAWNED;
@@ -2414,8 +2420,10 @@ bool SERVER_GetUserInfo( BYTESTREAM_s *pByteStream, bool bAllowKick, bool bEnfor
 	if ( bOverriddenName )
 		SERVERCOMMANDS_SetPlayerUserInfo( g_lCurrentClient, { NAME_Name }, g_lCurrentClient, SVCF_ONLYTHISCLIENT );
 
+#ifndef _UWP_
 	// Also, update the scoreboard.
 	SERVERCONSOLE_UpdatePlayerInfo( g_lCurrentClient, UDF_NAME );
+#endif
 
 	// Success!
 	return ( true );
@@ -3093,8 +3101,10 @@ void SERVER_WriteCommands( void )
 			// Tell everyone this player's ping.
 			SERVERCOMMANDS_UpdatePlayerPing( ulIdx );
 
+#ifndef _UWP_
 			// Also, update the scoreboard.
 			SERVERCONSOLE_UpdatePlayerInfo( ulIdx, UDF_PING );
+#endif
 		}
 
 		// [K6] Also check for afk players
@@ -3255,8 +3265,10 @@ void SERVER_DisconnectClient( ULONG ulClient, bool bBroadcast, bool bSaveInfo, L
 	if ( OldState >= CLS_SPAWNED )
 		GAMEMODE_HandleEvent( GAMEEVENT_PLAYERLEAVESSERVER, nullptr, ulClient, reason );
 
+#ifndef _UWP_
 	// Redo the scoreboard.
 	SERVERCONSOLE_ReListPlayers( );
+#endif
 
 	// [RC] Update clients using the RCON utility.
 	SERVER_RCON_UpdateInfo( SVRCU_PLAYERDATA );
@@ -4717,9 +4729,11 @@ void SERVER_SettingChanged( FBaseCVar &cvar, bool bUpdateConsole, int maxDecimal
 	SERVER_Printf( "%s changed to: %s\n", cvar.GetName( ), result.GetChars( ));
 	SERVERCOMMANDS_SetGameModeLimits( );
 
+#ifndef _UWP_
 	// [AK] Update the server console's score if necessary.
 	if ( bUpdateConsole )
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 }
 
 //*****************************************************************************
@@ -4779,7 +4793,9 @@ void SERVER_STATISTIC_AddToOutboundDataTransfer( ULONG ulNumBytes )
 	g_qwTotalOutboundDataTransferred += ulNumBytes;
 	g_lCurrentOutboundDataTransfer += ulNumBytes;
 
+#ifndef _UWP_
 	SERVERCONSOLE_UpdateStatistics( );
+#endif
 }
 
 //*****************************************************************************
@@ -4810,7 +4826,9 @@ void SERVER_STATISTIC_AddToInboundDataTransfer( ULONG ulNumBytes )
 	g_qwTotalInboundDataTransferred += ulNumBytes;
 	g_lCurrentInboundDataTransfer += ulNumBytes;
 
+#ifndef _UWP_
 	SERVERCONSOLE_UpdateStatistics( );
+#endif
 }
 
 //*****************************************************************************
@@ -6656,8 +6674,10 @@ static bool server_RequestJoin( BYTESTREAM_s *pByteStream )
 
 	SERVER_Printf( "%s joined the game.\n", players[g_lCurrentClient].userinfo.GetName() );
 
+#ifndef _UWP_
 	// Update this player's info on the scoreboard.
 	SERVERCONSOLE_UpdatePlayerInfo( g_lCurrentClient, UDF_FRAGS );
+#endif
 
 	return ( false );
 }
@@ -6964,8 +6984,10 @@ static bool server_ChangeTeam( BYTESTREAM_s *pByteStream )
 	// Tell the join queue that a player "sort of" left the game.
 	JOINQUEUE_PlayerLeftGame( g_lCurrentClient, false );
 
+#ifndef _UWP_
 	// Update this player's info on the scoreboard.
 	SERVERCONSOLE_UpdatePlayerInfo( g_lCurrentClient, UDF_FRAGS );
+#endif
 
 	return ( false );
 }

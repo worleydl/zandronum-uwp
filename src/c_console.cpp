@@ -1135,7 +1135,9 @@ int PrintString (int printlevel, const char *outline)
 			if (( g_ulRCONPlayer != MAXPLAYERS ) && ( g_bPrintToRCONPlayer ))
 				SERVER_PrintfPlayer( printlevel, g_ulRCONPlayer, "%s", outlinecopy );
 
+#ifndef _UWP_
 			SERVERCONSOLE_Print( outlinecopy );
+#endif
 			g_bPrintToRCONPlayer = true;
 		}
 		

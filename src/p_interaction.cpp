@@ -691,6 +691,7 @@ void AActor::Die (AActor *source, AActor *inflictor, int dmgflags)
 			// players[0].killcount++;
 		}
 
+#ifndef _UWP_
 		if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		{
 //			SERVER_PlayerKilledMonster( MAXPLAYERS );
@@ -698,6 +699,7 @@ void AActor::Die (AActor *source, AActor *inflictor, int dmgflags)
 			// Also, update the scoreboard.
 			SERVERCONSOLE_UpdateScoreboard( );
 		}
+#endif
 	}
 	
 	// [BC] Don't do this block in client mode.
@@ -2192,9 +2194,11 @@ void PLAYER_SetFragcount( player_t *pPlayer, LONG lFragCount, bool bAnnounce, bo
 	{
 		SERVERCOMMANDS_SetPlayerFrags( pPlayer - players );
 
+#ifndef _UWP_
 		// Also, update the scoreboard.
 		SERVERCONSOLE_UpdatePlayerInfo( pPlayer - players, UDF_FRAGS );
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 	}
 
 	// Refresh the HUD since a score has changed.
@@ -2240,12 +2244,14 @@ void PLAYER_ResetAllPlayersFragcount( void )
 
 		players[ulIdx].fragcount = 0;
 
+#ifndef _UWP_
 		// If we're the server, 
 		if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		{
 			SERVERCONSOLE_UpdatePlayerInfo( ulIdx, UDF_FRAGS );
 			SERVERCONSOLE_UpdateScoreboard( );
 		}
+#endif
 	}
 
 	// Refresh the HUD since a score has changed.
@@ -2361,9 +2367,11 @@ void PLAYER_SetTeam( player_t *pPlayer, ULONG ulTeam, bool bNoBroadcast )
 	if ( StatusBar && pPlayer->mo && ( pPlayer->mo->CheckLocalView( consoleplayer )))
 		StatusBar->AttachToPlayer( pPlayer );
 
+#ifndef _UWP_
 	// Update this player's info on the scoreboard.
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		SERVERCONSOLE_UpdatePlayerInfo( pPlayer - players, UDF_FRAGS );
+#endif
 
 	// [BL] If the player was "unarmed" give back his inventory now.
 	// [BB] Note: On the clients bUnarmed is never true!
@@ -2640,9 +2648,11 @@ void PLAYER_SetSpectator( player_t *pPlayer, bool bBroadcast, bool bDeadSpectato
 			pPlayer->pSkullBot->PostEvent( BOTEVENT_SPECTATING );
 	}
 
+#ifndef _UWP_
 	// Update this player's info on the scoreboard.
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		SERVERCONSOLE_UpdatePlayerInfo( pPlayer - players, UDF_FRAGS );
+#endif
 
 	// [TP] If we left the game, we need to rebuild player translations if we overrid them.
 	if ( D_ShouldOverridePlayerColors() && pPlayer - players == consoleplayer )
@@ -2791,9 +2801,11 @@ void PLAYER_SetPoints( player_t *pPlayer, ULONG ulPoints )
 		// If we're the server, notify the clients of the point count change.
 		SERVERCOMMANDS_SetPlayerPoints( static_cast<ULONG>( pPlayer - players ));
 
+#ifndef _UWP_
 		// Also, update the scoreboard.
 		SERVERCONSOLE_UpdatePlayerInfo( static_cast<ULONG>( pPlayer - players ), UDF_FRAGS );
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 	}
 }
 
@@ -2812,9 +2824,11 @@ void PLAYER_SetWins( player_t *pPlayer, ULONG ulWins )
 		// If we're the server, notify the clients of the win count change.
 		SERVERCOMMANDS_SetPlayerWins( pPlayer - players );
 
+#ifndef _UWP_
 		// Also, update the scoreboard.
 		SERVERCONSOLE_UpdatePlayerInfo( pPlayer - players, UDF_FRAGS );
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 	}
 }
 
@@ -2833,9 +2847,11 @@ void PLAYER_SetKills( player_t *pPlayer, ULONG ulKills )
 		// If we're the server, notify the clients of the kill count change.
 		SERVERCOMMANDS_SetPlayerKillCount( pPlayer - players );
 
+#ifndef _UWP_
 		// Also, update the scoreboard.
 		SERVERCONSOLE_UpdatePlayerInfo( pPlayer - players, UDF_FRAGS );
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 	}
 }
 
@@ -2872,8 +2888,10 @@ void PLAYER_SetTime( player_t *pPlayer, ULONG ulTime )
 			// Send out the updated time field to all clients.
 			SERVERCOMMANDS_UpdatePlayerTime( pPlayer - players );
 
+#ifndef _UWP_
 			// Update the console as well.
 			SERVERCONSOLE_UpdatePlayerInfo( pPlayer - players, UDF_TIME );
+#endif
 		}
 	}
 }

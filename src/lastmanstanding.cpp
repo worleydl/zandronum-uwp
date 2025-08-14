@@ -663,6 +663,7 @@ void LASTMANSTANDING_SetState( LMSSTATE_e State )
 		break;
 	}
 
+#ifndef _UWP_
 	// Since some players might have respawned, update the server console window.
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 	{
@@ -672,6 +673,7 @@ void LASTMANSTANDING_SetState( LMSSTATE_e State )
 				SERVERCONSOLE_UpdatePlayerInfo( ulIdx, UDF_FRAGS );
 		}
 	}
+#endif
 }
 
 //*****************************************************************************

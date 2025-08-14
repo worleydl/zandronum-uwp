@@ -344,6 +344,7 @@ void SURVIVAL_SetState( SURVIVALSTATE_e State )
 		break;
 	}
 
+#ifndef _UWP_
 	// Since some players might have respawned, update the server console window.
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 	{
@@ -353,6 +354,7 @@ void SURVIVAL_SetState( SURVIVALSTATE_e State )
 				SERVERCONSOLE_UpdatePlayerInfo( ulIdx, UDF_FRAGS );
 		}
 	}
+#endif
 
 	// Tell clients about the state change.
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )

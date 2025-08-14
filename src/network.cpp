@@ -378,9 +378,11 @@ void NETWORK_Construct( USHORT usPort, bool bAllocateLANSocket )
 	// the incoming UDP packet.
 	g_NetworkMessage.Init( ((MAX_UDP_PACKET * 8) / 3 + 1), BUFFERTYPE_READ );
 
+#ifndef _UWP_
 	// If hosting, update the server GUI.
 	if( NETWORK_GetState() == NETSTATE_SERVER )
 		SERVERCONSOLE_UpdateIP( g_LocalAddress );
+#endif
 
 	// [BB] Initialize the checksum of the non-map lumps that need to be authenticated when connecting a new player.
 	// [AK] This is also a list of lumps that cannot be modified by AUTHINFO.

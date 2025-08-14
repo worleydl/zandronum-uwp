@@ -990,13 +990,17 @@ void SERVERCONSOLE_UpdateTitleString( const char *pszString );
 // Should the server inform the master server of its existence?
 CUSTOM_CVAR( Bool, sv_updatemaster, true, CVAR_SERVERINFO|CVAR_NOSETBYACS )
 {
+#ifndef _UWP_
 	SERVERCONSOLE_UpdateBroadcasting( );
+#endif
 }
 
 // Should the server broadcast so LAN clients can hear it?
 CUSTOM_CVAR( Bool, sv_broadcast, true, CVAR_ARCHIVE|CVAR_NOSETBYACS )
 {
+#ifndef _UWP_
 	SERVERCONSOLE_UpdateBroadcasting( );
+#endif
 }
 
 // Name of this server on launchers.
@@ -1041,7 +1045,9 @@ CUSTOM_CVAR( String, sv_hostname, "Unnamed " GAMENAME " server", CVAR_ARCHIVE|CV
 		return;
 	}
 
+#ifndef _UWP_
 	SERVERCONSOLE_UpdateTitleString( (const char *)self );
+#endif
 
 	// [AK] Notify the clients about the new hostname.
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )

@@ -636,8 +636,10 @@ void BOTS_RemoveBot( ULONG ulPlayerIdx, bool bExitMsg )
 
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 	{
+#ifndef _UWP_
 		// Redo the scoreboard.
 		SERVERCONSOLE_ReListPlayers( );
+#endif
 	
 		// [RC] Update clients using the RCON utility.
 		SERVER_RCON_UpdateInfo( SVRCU_PLAYERDATA );
@@ -2004,8 +2006,10 @@ CSkullBot::CSkullBot( const char *pszName, const char *pszTeamName, ULONG ulPlay
 		// Let the other players know that this bot has entered the game.
 		SERVER_Printf( "%s entered the game.\n", players[ulPlayerNum].userinfo.GetName() );
 
+#ifndef _UWP_
 		// Redo the scoreboard.
 		SERVERCONSOLE_ReListPlayers( );
+#endif
 
 		// [RC] Update clients using the RCON utility.
 		SERVER_RCON_UpdateInfo( SVRCU_PLAYERDATA );

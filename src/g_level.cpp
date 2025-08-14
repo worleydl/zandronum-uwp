@@ -1053,9 +1053,11 @@ void G_DoCompleted (void)
 
 	WI_Start (&wminfo);
 
+#ifndef _UWP_
 	// [BB] If we're server, update the scoreboard on the server console.
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 }
 
 //==========================================================================
@@ -1443,7 +1445,9 @@ void G_DoLoadLevel (int position, bool autosave)
 		// If we're the server, update the console.
 		if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		{
+#ifndef _UWP_
 			SERVERCONSOLE_UpdatePlayerInfo( i, UDF_FRAGS|UDF_PING|UDF_TIME );
+#endif
 			// [BB] Since the map was changed, the players who are already spawned need to reauthenticate.
 			if ( SERVER_GetClient( i )->State == CLS_SPAWNED )
 				SERVER_GetClient( i )->State = CLS_SPAWNED_BUT_NEEDS_AUTHENTICATION;
@@ -1637,6 +1641,7 @@ void G_DoLoadLevel (int position, bool autosave)
 	// [BC] If we're server, update the map name and scoreboard on the server console.
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 	{
+#ifndef _UWP_
 		// Now that we're in a new level, update the mapname/scoreboard.
 		FString string;
 		string.Format( "%s: %s", level.mapname, level.LevelName.GetChars() );
@@ -1645,6 +1650,7 @@ void G_DoLoadLevel (int position, bool autosave)
 
 		// Reset the columns.
 		SERVERCONSOLE_SetupColumns( );
+#endif
 
 		// Also, update the level for all clients.
 		SERVER_LoadNewLevel( level.mapname );

@@ -891,8 +891,10 @@ void TEAM_SetPointCount( unsigned int team, int pointCount, bool doAnnouncement,
 	{
 		SERVERCOMMANDS_SetTeamScore( team, TEAMSCORE_POINTS, doAnnouncement );
 
+#ifndef _UWP_
 		// Also, update the scoreboard.
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 	}
 
 	// Implement the pointlimit.
@@ -1174,8 +1176,10 @@ void TEAM_SetFragCount( ULONG ulTeamIdx, LONG lFragCount, bool bAnnounce )
 	{
 		SERVERCOMMANDS_SetTeamScore( ulTeamIdx, TEAMSCORE_FRAGS, bAnnounce );
 
+#ifndef _UWP_
 		// Also, update the scoreboard.
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 	}
 }
 
@@ -1240,8 +1244,10 @@ void TEAM_SetWinCount( ULONG ulTeamIdx, LONG lWinCount, bool bAnnounce )
 	{
 		SERVERCOMMANDS_SetTeamScore( ulTeamIdx, TEAMSCORE_WINS, bAnnounce );
 
+#ifndef _UWP_
 		// Also, update the scoreboard.
 		SERVERCONSOLE_UpdateScoreboard( );
+#endif
 	}
 }
 
