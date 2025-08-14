@@ -929,8 +929,11 @@ void DoMain (HINSTANCE hInstance)
 		// [BC] When hosting, spawn a console dialog box instead of creating a window.
 		if ( Args->CheckParm( "-host" ))
 		{
+// TODO: Disable hosting or show a warning when a user tries
+#ifndef _UWP_
 			// This never returns.
 			DialogBox( g_hInst, MAKEINTRESOURCE( IDD_SERVERDIALOG ), NULL/*(HWND)Window*/, (DLGPROC)SERVERCONSOLE_ServerDialogBoxCallback );
+#endif
 		}
 		else
 		{
@@ -1286,9 +1289,6 @@ static void infiniterecursion(int foo)
 // WinMain
 //
 //==========================================================================
-
-// TODO: Put this in the cmake
-#define _UWP_
 
 #ifdef _UWP_
 extern "C" int __declspec(dllexport) ExternalWinMain(HINSTANCE hInstance, HINSTANCE nothing, LPSTR cmdline, int nCmdShow)

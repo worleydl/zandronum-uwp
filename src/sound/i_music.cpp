@@ -521,6 +521,7 @@ retry_as_fmod:
 
 	if (info == NULL)
 	{
+#ifndef _UWP_
 		// Check for CDDA "format"
 		if (id[0] == (('R')|(('I')<<8)|(('F')<<16)|(('F')<<24)))
 		{
@@ -543,6 +544,7 @@ retry_as_fmod:
 				}
 			}
 		}
+#endif
 
 		// no FMOD => no modules/streams
 		// 1024 bytes is an arbitrary restriction. It's assumed that anything
@@ -586,6 +588,7 @@ retry_as_fmod:
 
 MusInfo *I_RegisterCDSong (int track, int id)
 {
+#ifndef _UWP_
 	MusInfo *info = new CDSong (track, id);
 
 	if (info && !info->IsValid ())
@@ -595,6 +598,9 @@ MusInfo *I_RegisterCDSong (int track, int id)
 	}
 
 	return info;
+#else
+	return NULL;
+#endif
 }
 
 //==========================================================================

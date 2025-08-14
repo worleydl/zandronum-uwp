@@ -263,6 +263,7 @@ static void I_SelectTimer()
 {
 	assert(basetime == 0);
 
+#ifndef _UWP_
 	// Use a timer event if possible.
 	NewTicArrived = CreateEvent(NULL, FALSE, FALSE, NULL);
 	if (NewTicArrived)
@@ -283,6 +284,7 @@ static void I_SelectTimer()
 		MillisecondsPerTic = delay;
 		TimerEventID = timeSetEvent(delay, 0, TimerTicked, 0, TIME_PERIODIC);
 	}
+#endif
 	// Get the current time as the basetime.
 	basetime = timeGetTime();
 	// Set timer functions.
@@ -851,10 +853,12 @@ void I_Quit()
 {
 	HasExited = true;		/* Prevent infinitely recursive exits -- killough */
 
+#ifndef _UWP_
 	if (TimerEventID != 0)
 	{
 		timeKillEvent(TimerEventID);
 	}
+#endif
 	if (NewTicArrived != NULL)
 	{
 		CloseHandle(NewTicArrived);
@@ -1517,9 +1521,11 @@ void I_ShowNoIWADsScreen( FIWadManager *IWadMan )
 {
 	g_IWadMan = IWadMan;
 
+#ifndef _UWP_
 	if ( Args->CheckParm( "-host" ) )
 		SERVERCONSOLE_Hide( );
 	else
+#endif
 		ShowWindow( Window, SW_HIDE );
 
 	DialogBox( g_hInst, MAKEINTRESOURCE(IDD_NOIWADS), NULL, (DLGPROC)NoIWADBoxCallback );

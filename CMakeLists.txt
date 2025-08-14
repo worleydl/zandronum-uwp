@@ -21,6 +21,7 @@ endif(${CMAKE_MAJOR_VERSION} GREATER 2 OR ${CMAKE_MINOR_VERSION} GREATER 7)
 # UWP config
 option( UWP "Build in UWP compatibility mode (outputs shared DLL for external launch)." OFF)
 if( UWP )
+	add_compile_definitions(_UWP_)
 	set(FORCE_INTERNAL_ZLIB ON)
 endif( UWP )
 

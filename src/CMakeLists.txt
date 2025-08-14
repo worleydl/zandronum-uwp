@@ -704,7 +704,7 @@ set( PLAT_WIN32_SOURCES
 	win32/fb_ddraw.cpp
 	win32/hardware.cpp
 	win32/helperthread.cpp
-	win32/i_cd.cpp
+	#win32/i_cd.cpp
 	win32/i_crash.cpp
 	win32/i_input.cpp
 	win32/i_keyboard.cpp
@@ -733,9 +733,12 @@ set( PLAT_WIN32_SOURCES ${PLAT_WIN32_SOURCES}
 	win32/g15/include/LCDScrollingText.cpp
 	win32/g15/include/LCDStreamingText.cpp
 	win32/g15/include/LCDText.cpp
-	win32/serverconsole/serverconsole.cpp
-	win32/serverconsole/serverconsole_dmflags.cpp
-	win32/serverconsole/serverconsole_settings.cpp )
+	# TODO: Needs optional cleanup for UWP build
+	# CreateStatusWindow has an impl on UWP but there's a weird ordinal mismatch that causes launch failure
+	#win32/serverconsole/serverconsole.cpp
+	#win32/serverconsole/serverconsole_dmflags.cpp
+	#win32/serverconsole/serverconsole_settings.cpp )
+)
 set( PLAT_SDL_SOURCES
 	sdl/crashcatcher.c
 	sdl/hardware.cpp
@@ -1351,7 +1354,7 @@ set( ZDOOM_SRCS
 	sound/fmodsound.cpp
 	sound/i_music.cpp
 	sound/i_sound.cpp
-	sound/music_cd.cpp
+	#sound/music_cd.cpp
 	sound/music_dumb.cpp
 	sound/music_gme.cpp
 	sound/music_mus_midiout.cpp

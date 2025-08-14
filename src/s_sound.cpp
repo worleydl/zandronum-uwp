@@ -19,7 +19,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef _WIN32
@@ -3069,7 +3068,9 @@ CCMD (cd_stop)
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		return;
 
+#ifndef _UWP_
 	CD_Stop ();
+#endif
 }
 
 //==========================================================================
@@ -3084,7 +3085,9 @@ CCMD (cd_eject)
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		return;
 
+#ifndef _UWP_
 	CD_Eject ();
+#endif
 }
 
 //==========================================================================
@@ -3099,7 +3102,9 @@ CCMD (cd_close)
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		return;
 
+#ifndef _UWP_
 	CD_UnEject ();
+#endif
 }
 
 //==========================================================================
@@ -3114,7 +3119,9 @@ CCMD (cd_pause)
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		return;
 
+#ifndef _UWP_
 	CD_Pause ();
+#endif
 }
 
 //==========================================================================
@@ -3129,7 +3136,9 @@ CCMD (cd_resume)
 	if ( NETWORK_GetState( ) == NETSTATE_SERVER )
 		return;
 
+#ifndef _UWP_
 	CD_Resume ();
+#endif
 }
 
 //==========================================================================

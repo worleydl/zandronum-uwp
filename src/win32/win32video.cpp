@@ -753,12 +753,14 @@ void I_SetFPSLimit(int limit)
 	{
 		limit = vid_maxfps;
 	}
+#ifndef _UWP_
 	// Kill any leftover timer.
 	if (FPSLimitTimer != 0)
 	{
 		timeKillEvent(FPSLimitTimer);
 		FPSLimitTimer = 0;
 	}
+#endif
 	if (limit == 0)
 	{ // no limit
 		if (FPSLimitEvent != NULL)
@@ -782,6 +784,7 @@ void I_SetFPSLimit(int limit)
 		atterm(StopFPSLimit);
 		// Set timer event as close as we can to limit/sec, in milliseconds.
 		UINT period = 1000 / limit;
+#ifndef _UWP_
 		FPSLimitTimer = timeSetEvent(period, 0, (LPTIMECALLBACK)FPSLimitEvent, 0, TIME_PERIODIC | TIME_CALLBACK_EVENT_SET);
 		if (FPSLimitTimer == 0)
 		{
@@ -791,6 +794,7 @@ void I_SetFPSLimit(int limit)
 			return;
 		}
 		DPrintf("FPS timer set to %u ms\n", period);
+#endif
 	}
 }
 
