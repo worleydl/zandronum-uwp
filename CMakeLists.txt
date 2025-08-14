@@ -18,6 +18,12 @@ else(${CMAKE_MAJOR_VERSION} GREATER 2 OR ${CMAKE_MINOR_VERSION} GREATER 7)
 	set( NO_GENERATOR_EXPRESSIONS ON )
 endif(${CMAKE_MAJOR_VERSION} GREATER 2 OR ${CMAKE_MINOR_VERSION} GREATER 7)
 
+# UWP config
+option( UWP "Build in UWP compatibility mode (outputs shared DLL for external launch)." OFF)
+if( UWP )
+	set(FORCE_INTERNAL_ZLIB ON)
+endif( UWP )
+
 # Support cross compiling
 option( FORCE_CROSSCOMPILE "Turn on cross compiling." NO )
 if( FORCE_CROSSCOMPILE )
@@ -98,6 +104,7 @@ endif( CMAKE_BUILD_TYPE MATCHES Release AND ( CMAKE_COMPILER_IS_GNUCXX OR MSVC )
 find_package( BZip2 )
 find_package( JPEG )
 find_package( ZLIB )
+
 # GME
 find_path( GME_INCLUDE_DIR gme/gme.h )
 find_library( GME_LIBRARIES gme )

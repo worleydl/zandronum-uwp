@@ -1050,7 +1050,7 @@ set( NOT_COMPILED_SOURCE_FILES
 # if it doesn't exist yet.
 set_source_files_properties( ${CMAKE_CURRENT_SOURCE_DIR}/network/servercommands.cpp PROPERTIES GENERATED TRUE )
 
-add_executable( zdoom WIN32
+set( ZDOOM_SRCS
 	${HEADER_FILES}
 	${NOT_COMPILED_SOURCE_FILES}
 	__autostart.cpp
@@ -1429,6 +1429,12 @@ add_executable( zdoom WIN32
 	r_data/r_translate.cpp
 	zzautozend.cpp
 )
+
+if ( NOT UWP )
+	add_executable(zdoom WIN32 ${ZDOOM_SRCS})
+else( NOT UWP )
+	add_library(zdoom SHARED ${ZDOOM_SRCS})
+endif( NOT UWP )
 
 # [BB] To keep the delta to ZDoom small, we keep the target name 'zdoom', but
 # change the label, so that it's displayed as 'Zandronum' in an IDE like VC++.

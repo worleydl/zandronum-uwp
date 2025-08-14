@@ -1287,7 +1287,14 @@ static void infiniterecursion(int foo)
 //
 //==========================================================================
 
+// TODO: Put this in the cmake
+#define _UWP_
+
+#ifdef _UWP_
+extern "C" int __declspec(dllexport) ExternalWinMain(HINSTANCE hInstance, HINSTANCE nothing, LPSTR cmdline, int nCmdShow)
+#else
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE nothing, LPSTR cmdline, int nCmdShow)
+#endif
 {
 	g_hInst = hInstance;
 
