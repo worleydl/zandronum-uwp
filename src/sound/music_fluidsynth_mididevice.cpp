@@ -307,7 +307,11 @@ FluidSynthMIDIDevice::FluidSynthMIDIDevice()
 		if (0 != (filepart = GetSystemDirectoryA(sysdir, MAX_PATH)))
 		{
 			strcat(sysdir, "\\CT4MGM.SF2");
+#ifndef _UWP_
 			if (0 == LoadPatchSets(sysdir))
+#else
+			if (0 == LoadPatchSets("E:\\soundfonts\\default.sf2"))
+#endif
 			{
 				// Try again with CT2MGM.SF2
 				sysdir[filepart + 3] = '2';
@@ -612,7 +616,11 @@ FString FluidSynthMIDIDevice::GetStats()
 	CritSec.Enter();
 	int polyphony = fluid_synth_get_polyphony(FluidSynth);
 	int voices = fluid_synth_get_active_voice_count(FluidSynth);
+#ifndef _UWP_
 	double load = fluid_synth_get_cpu_load(FluidSynth);
+#else
+	double load = 66.6;
+#endif
 	char *chorus, *reverb;
 	int maxpoly;
 	fluid_settings_getstr(FluidSettings, "synth.chorus.active", &chorus);
@@ -663,7 +671,9 @@ bool FluidSynthMIDIDevice::LoadFluidSynth()
 		{ (void **)&fluid_synth_set_polyphony,			"fluid_synth_set_polyphony" },
 		{ (void **)&fluid_synth_get_polyphony,			"fluid_synth_get_polyphony" },
 		{ (void **)&fluid_synth_get_active_voice_count,	"fluid_synth_get_active_voice_count" },
+#ifndef _UWP_
 		{ (void **)&fluid_synth_get_cpu_load,			"fluid_synth_get_cpu_load" },
+#endif
 		{ (void **)&fluid_synth_system_reset,			"fluid_synth_system_reset" },
 		{ (void **)&fluid_synth_noteon,					"fluid_synth_noteon" },
 		{ (void **)&fluid_synth_noteoff,				"fluid_synth_noteoff" },
