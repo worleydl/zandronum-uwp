@@ -23,8 +23,9 @@ void gl_CalculateCPUSpeed();
 extern int NewWidth, NewHeight, NewBits, DisplayBits;
 
 #ifdef _UWP_
-extern "C" __declspec(dllimport) void  uwp_ProcessEvents();
 extern "C" __declspec(dllimport) void* uwp_GetWindowReference();
+extern "C" __declspec(dllimport) void  uwp_ProcessEvents();
+extern "C" __declspec(dllimport) void  uwp_SetScreenSize(int x, int y);
 #endif
 
 CUSTOM_CVAR(Int, gl_vid_multisample, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG | CVAR_NOINITCALL )
@@ -397,6 +398,11 @@ bool Win32GLVideo::SetResolution (int width, int height, int bits)
 	bits=32;
 	
 	V_DoModeSetup(width, height, bits);
+
+#ifdef _UWP_
+	uwp_SetScreenSize(width, height);
+#endif
+
 	return true;	// We must return true because the old video context no longer exists.
 }
 
