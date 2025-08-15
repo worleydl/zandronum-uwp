@@ -23,6 +23,8 @@ void gl_CalculateCPUSpeed();
 extern int NewWidth, NewHeight, NewBits, DisplayBits;
 
 #ifdef _UWP_
+extern "C" __declspec(dllimport) void  uwp_GetActualSize(int* x, int* y);
+extern "C" __declspec(dllimport) float uwp_GetRefreshRate();
 extern "C" __declspec(dllimport) void* uwp_GetWindowReference();
 extern "C" __declspec(dllimport) void  uwp_ProcessEvents();
 extern "C" __declspec(dllimport) void  uwp_SetScreenSize(int x, int y);
@@ -166,6 +168,7 @@ void Win32GLVideo::GetDisplayDeviceName()
 
 void Win32GLVideo::MakeModesList()
 {
+#ifndef _UWP_
 	ModeInfo *pMode, *nextmode;
 	DEVMODE dm;
 	int mode = 0;
@@ -194,6 +197,37 @@ void Win32GLVideo::MakeModesList()
 			}
 		}
 	}
+#else 
+	int width, height;
+	int refresh = std::ceil(uwp_GetRefreshRate());
+	uwp_GetActualSize(&width, &height);
+
+	static const ModeInfo commonModes[] = {
+		{320,  240,  32, 240,  refresh},
+		{640,  480,  32, 480,  refresh},
+		{800,  600,  32, 600,  refresh},
+		{1024, 768,  32, 768,  refresh},
+		{1280, 720,  32, 720,  refresh},
+		{1280, 800,  32, 800,  refresh},
+		{1366, 768,  32, 768,  refresh},
+		{1440, 900,  32, 900,  refresh},
+		{1600, 900,  32, 900,  refresh},
+		{1680, 1050, 32, 1050, refresh},
+		{1920, 1080, 32, 1080, refresh},
+		{1920, 1200, 32, 1200, refresh},
+		{2560, 1440, 32, 1440, refresh},
+		{2560, 1600, 32, 1600, refresh},
+		{3840, 2160, 32, 2160, refresh},
+	};
+
+	for (const auto& mode : commonModes) {
+		this->AddMode(mode.width, mode.height, mode.bits, mode.height, mode.refreshHz);
+
+		if (mode.height >= height) {
+			break;
+		}
+	}
+#endif
 }
 
 //==========================================================================
