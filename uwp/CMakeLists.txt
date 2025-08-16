@@ -42,6 +42,7 @@ set(BinDeps
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/libgallium_wgl.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/opengl32.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/SDL2.dll
+	#${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/winmm.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/z-1.dll
 
 	${PROJECT_DIR}/${CMAKE_BUILD_TYPE}/skulltag_actors.pk3
@@ -49,8 +50,8 @@ set(BinDeps
 
 	# Temporary
 	"C:/Windows/System32/glu32.dll"
-	"G:/dev/uwp/libs/winmm-wrapper/uwpmm.dll"
 	"G:/dev/uwp/libs/fluidlite/fluidsynth64.dll"
+	"G:/dev/uwp/libs/winmm-wrapper/build_rel/Debug/winmm.dll"
 	"E:/skulltag/doom.wad"
 
 
