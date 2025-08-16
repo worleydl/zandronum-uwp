@@ -1253,8 +1253,6 @@ void FMODSoundRenderer::Shutdown()
 		// [AK] Shut down the VoIP controller.
 		VOIPController::GetInstance( ).Shutdown( );
 
-// No idea what's causing fmodex to lock up on uwp exit...+1 for getting openal working eventually
-#ifndef _UWP_
 		Sys->close();
 		if (OutputPlugin != 0)
 		{
@@ -1263,7 +1261,6 @@ void FMODSoundRenderer::Shutdown()
 		}
 		Sys->release();
 		Sys = NULL;
-#endif
 	}
 }
 
