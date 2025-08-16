@@ -1037,8 +1037,10 @@ void DoMain (HINSTANCE hInstance)
 #endif
 		}
 
+#ifndef _UWP_
 		CoInitialize (NULL);
 		atterm (UnCOM);
+#endif
 
 		C_InitConsole (((WinWidth / 8) + 2) * 8, (WinHeight / 12) * 8, false);
 
