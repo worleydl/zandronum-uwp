@@ -124,6 +124,7 @@ extern BITMAPINFO *StartupBitmap;
 extern UINT TimerPeriod;
 
 #ifdef _UWP_
+static LPSTR g_cmdline;
 extern "C" __declspec(dllimport) void uwp_GetScreenSize(int* x, int* y);
 extern "C" __declspec(dllimport) void* uwp_GetWindowReference();
 #endif
@@ -831,7 +832,37 @@ void DoMain (HINSTANCE hInstance)
 		_set_new_handler (NewFailure);
 #endif
 
+#ifndef _UWP_
 		Args = new DArgs(__argc, __argv);
+#else
+		// UWP generates a new cmdline that needs to be parsed
+		// TODO: Cleanup this code, see how the existing menu passes along selections
+		std::vector<char*> tokens;
+
+		// Make a writable copy since strtok modifies the string
+		size_t len = strlen(g_cmdline);
+		char* buffer = new char[len + 1];
+		strcpy(buffer, g_cmdline);
+
+		// Tokenize using strtok
+		char* token = strtok(buffer, " ");
+		while (token != nullptr) {
+			// Make a copy of each token (since strtok buffer will be deleted)
+			char* tokCopy = new char[strlen(token) + 1];
+			strcpy(tokCopy, token);
+			tokens.push_back(tokCopy);
+
+			token = strtok(nullptr, " ");
+		}
+
+		Args = new DArgs(tokens.size(), tokens.data());
+
+		// Cleanup
+		for (char* ptr : tokens) {
+			delete[] ptr;
+		}
+		delete[] buffer;
+#endif
 
 		// [SB] Zandronum version
 		if ( ZA_PrintVersion( ) )
@@ -1313,6 +1344,9 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE nothing, LPSTR cmdline, int n
 #endif
 {
 	g_hInst = hInstance;
+#ifdef _UWP_
+	g_cmdline = cmdline;
+#endif
 
 	InitCommonControls ();			// Load some needed controls and be pretty under XP
 

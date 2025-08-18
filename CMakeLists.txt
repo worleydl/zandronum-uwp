@@ -27,7 +27,7 @@ if( UWP )
 
 	FetchContent_Declare(UwpDep
 	    GIT_REPOSITORY https://github.com/worleydl/uwp-dep.git
-	    GIT_TAG 8493b0c6dcbd4cb7134352db60b478c401916ac1
+	    GIT_TAG da75dd2240b6eca7848aebc2f72433bce1a15e3b
 	)
 	FetchContent_MakeAvailable(UwpDep)
 endif( UWP )

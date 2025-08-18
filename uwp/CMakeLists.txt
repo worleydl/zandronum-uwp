@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 # Setup UWP platform
 set(CMAKE_SYSTEM_NAME WindowsStore)
 set(CMAKE_SYSTEM_VERSION 10.0.19041.0)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -20,8 +20,23 @@ if(NOT PROJECT_DIR)
   message(FATAL_ERROR "PROJECT_DIR must be set to a valid path pointing to the main Zandronum cmake dir")
 endif()
 
+# Add imgui for bootmenu
+set(IMGUI_SRC
+    ${PROJECT_DIR}/_deps/uwpdep-src/external/imgui/imgui.cpp
+    ${PROJECT_DIR}/_deps/uwpdep-src/external/imgui/imgui_draw.cpp
+    ${PROJECT_DIR}/_deps/uwpdep-src/external/imgui/imgui_widgets.cpp
+    ${PROJECT_DIR}/_deps/uwpdep-src/external/imgui/imgui_tables.cpp
+    ${PROJECT_DIR}/_deps/uwpdep-src/external/imgui/imgui_demo.cpp
+    ${PROJECT_DIR}/_deps/uwpdep-src/external/imgui/backends/imgui_impl_sdl2.cpp
+    ${PROJECT_DIR}/_deps/uwpdep-src/external/imgui/backends/imgui_impl_opengl3.cpp
+)
+
 add_executable(${PROJECT_NAME} WIN32
-	main.cpp
+	${IMGUI_SRC}
+
+	src/main.cpp
+	src/bootmenu.cpp
+	src/wad.cpp
 )
 
 set(PkgAssets
@@ -50,9 +65,6 @@ set(BinDeps
 	${PROJECT_DIR}/${CMAKE_BUILD_TYPE}/skulltag_actors.pk3
 	${PROJECT_DIR}/${CMAKE_BUILD_TYPE}/zandronum.pk3
 
-	# Temporary
-	"E:/skulltag/doom.wad"
-
 	Package.appxmanifest
 )
 
@@ -62,6 +74,7 @@ set(BinLibs
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/lib/libuwp.lib
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/lib/SDL2.lib
 
+	OpenGL32
 	OneCore
 	WindowsApp
 )
@@ -93,6 +106,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 target_include_directories(${PROJECT_NAME} PRIVATE
  	${PROJECT_DIR}/_deps/uwpdep-src/x64/include
+ 	${PROJECT_DIR}/_deps/uwpdep-src/external/imgui
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${BinLibs})

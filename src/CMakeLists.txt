@@ -1463,7 +1463,7 @@ target_link_libraries( zdoom ${ZDOOM_LIBS} gdtoa dumb lzma GeoIP sqlite3 )
 
 if(UWP)
 	target_link_libraries( zdoom 
-		${CMAKE_SOURCE_DIR}/uwp/libuwp.lib
+		${CMAKE_BINARY_DIR}/_deps/uwpdep-src/x64/lib/libuwp.lib
 	)
 endif(UWP)
 include_directories( .
