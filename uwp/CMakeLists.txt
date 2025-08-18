@@ -36,24 +36,22 @@ set(BinDeps
 	${PROJECT_DIR}/${CMAKE_BUILD_TYPE}/zandronum.dll
 
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/dxil.dll
+	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/fluidsynth64.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/fmodex64.dll
+	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/glu32.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/libcrypto-3-x64.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/libuwp.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/libgallium_wgl.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/opengl32.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/SDL2.dll
-	#${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/winmm.dll
+	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/winmm.dll
 	${PROJECT_DIR}/_deps/uwpdep-src/x64/bin/z-1.dll
 
 	${PROJECT_DIR}/${CMAKE_BUILD_TYPE}/skulltag_actors.pk3
 	${PROJECT_DIR}/${CMAKE_BUILD_TYPE}/zandronum.pk3
 
 	# Temporary
-	"C:/Windows/System32/glu32.dll"
-	"G:/dev/uwp/libs/fluidlite/fluidsynth64.dll"
-	"G:/dev/uwp/libs/winmm-wrapper/build_rel/Debug/winmm.dll"
 	"E:/skulltag/doom.wad"
-
 
 	Package.appxmanifest
 )
@@ -98,4 +96,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${BinLibs})
+
 set_target_properties(${PROJECT_NAME} PROPERTIES VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION 10.0.19041.0)

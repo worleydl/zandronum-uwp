@@ -1,5 +1,6 @@
 # [SB] Set the minimum version to 3.5, since it's the lowest CMake 4.0 will accept.
 cmake_minimum_required( VERSION 3.5 )
+include(FetchContent)
 project(Zandronum)
 
 if( COMMAND cmake_policy )
@@ -23,6 +24,12 @@ option( UWP "Build in UWP compatibility mode (outputs shared DLL for external la
 if( UWP )
 	add_compile_definitions(_UWP_)
 	set(FORCE_INTERNAL_ZLIB ON)
+
+	FetchContent_Declare(UwpDep
+	    GIT_REPOSITORY https://github.com/worleydl/uwp-dep.git
+	    GIT_TAG 8493b0c6dcbd4cb7134352db60b478c401916ac1
+	)
+	FetchContent_MakeAvailable(UwpDep)
 endif( UWP )
 
 # Support cross compiling
