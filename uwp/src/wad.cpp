@@ -1,5 +1,6 @@
 #include "wad.h"
 #include <filesystem>
+#include <set>
 
 using namespace std;
 namespace WAD {
@@ -17,7 +18,7 @@ namespace WAD {
 	};
 
 	vector<string> find_impl(unordered_set<string> allowedExtensions, bool filter=false) {
-		vector<string> out;
+		set<string> out;
 
 		for (auto path : wadPaths)
 		{
@@ -37,13 +38,13 @@ namespace WAD {
 					}
 
 					if (allowedExtensions.contains(ext)) {
-						out.push_back(filename);
+						out.insert(filename);
 					}
 				}
 			}
 		}
 
-		return out;
+		return vector<string>(out.begin(), out.end());
 	}
 
 	vector<string> find_aux() {
