@@ -1345,6 +1345,7 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE nothing, LPSTR cmdline, int n
 {
 	g_hInst = hInstance;
 #ifdef _UWP_
+	_putenv("DOOMWADDIR=E:/zandronum");
 	g_cmdline = cmdline;
 #endif
 

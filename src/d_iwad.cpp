@@ -454,10 +454,6 @@ int FIWadManager::IdentifyVersion (TArray<FString> &wadfiles, const char *iwad, 
 			}
 		}
 #endif
-#ifdef _UWP_
-		FString uwp_external = "E:/zandronum/";
-		CheckIWAD (uwp_external, &wads[0]);
-#endif
 	}
 
 	if (iwadparm != NULL && !wads[0].Path.IsEmpty())
