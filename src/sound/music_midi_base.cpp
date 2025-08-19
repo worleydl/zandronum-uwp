@@ -66,7 +66,12 @@ static void MIDIDeviceChanged(int newdev)
 #ifdef _WIN32
 UINT mididevice;
 
+#ifndef _UWP_
 CUSTOM_CVAR (Int, snd_mididevice, -1, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
+#else
+// Default to OPL for UWP, fluidsynth can work with extra setup
+CUSTOM_CVAR (Int, snd_mididevice, -3, CVAR_ARCHIVE|CVAR_GLOBALCONFIG)
+#endif
 {
 	if (!nummididevicesset)
 		return;
