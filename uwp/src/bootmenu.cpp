@@ -163,10 +163,11 @@ std::string BootMenu::generateParams()
     SDL_GL_DeleteContext(gl_context);
     SDL_DestroyWindow(window);
 
-    std::string cmdline = "zandronum-uwp.exe -iwad " + selected;
+    std::string cmdline = "zandronum-uwp.exe";
     for (auto entry : enabledMods) {
         cmdline += " -file " + entry;
     }
+    cmdline += " -iwad " + selected;
 
     return cmdline;
 }
